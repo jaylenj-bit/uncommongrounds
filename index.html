@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cozy Cinnamon Café</title>
+  <meta name="description" content="A warm, minimalist café website with a cozy cinnamon palette and thoughtful UX/UI." />
+
+  <!-- Visual style: warm, cozy cinnamon + light brown + white -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cinnamon: #8b4513;      /* cinnamon (saddle/sienna vibe) */
+      --cinnamon-600: #7a3e11;  
+      --cinnamon-300: #b06a3a;
+      --latte: #f2e9e4;         /* warm cream */
+      --foam: #fffdf9;          /* near white */
+      --mocha: #3f2d25;         /* deep coffee */
+      --tan: #d7c0ae;           /* light brown accent */
+      --beige: #efe3d6;         /* section alt */
+
+      --text: #2a2a2a;
+      --text-muted: #5e524b;
+      --radius: 16px;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,.08);
+      --shadow-md: 0 12px 30px rgba(0,0,0,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: var(--foam);
+      line-height: 1.6;
+    }
+
+    /* ---------- Global utility ---------- */
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+    .grid { display: grid; gap: 1.25rem; }
+    .btn {
+      appearance: none; border: 0; padding: .9rem 1.2rem; border-radius: 999px;
+      background: var(--cinnamon); color: white; font-weight: 600; letter-spacing: .2px;
+      box-shadow: var(--shadow-sm); cursor: pointer; transition: transform .15s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--cinnamon-600); }
+    .btn:focus-visible { outline: 3px solid var(--tan); outline-offset: 2px; }
+    .btn-ghost { background: transparent; color: var(--cinnamon); border: 1.5px solid var(--cinnamon); }
+    .btn-ghost:hover { background: var(--latte); }
+
+    .card {
+      background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      border: 1px solid #efe9e3;
+    }
+
+    .section { padding: 64px 0; }
+    .section.alt { background: linear-gradient(180deg, #fff, var(--beige)); }
+
+    h1, h2, h3 { font-family: "Playfair Display", serif; color: var(--mocha); letter-spacing: .2px; }
+    h1 { font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; }
+    h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); margin: 0 0 .25rem; }
+    h3 { font-size: 1.2rem; margin: 0; }
+    p { margin: .5rem 0 0; color: var(--text-muted); }
+
+    /* ---------- Header / Nav ---------- */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(140%) blur(6px);
+      background: color-mix(in oklab, white 72%, var(--beige));
+      border-bottom: 1px solid #efe9e3;
+    }
+
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: .75rem 0; }
+    .brand { display: flex; align-items: center; gap: .65rem; text-decoration: none; }
+    .brand-mark {
+      width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--cinnamon), var(--cinnamon-300));
+      box-shadow: inset 0 0 0 2px #ffffffb3, 0 6px 16px #8b451322;
+    }
+    .brand-name { font-weight: 700; color: var(--mocha); letter-spacing: .3px; }
+
+    nav ul { display: flex; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+    nav a { text-decoration: none; color: var(--text); font-weight: 500; padding: .5rem .75rem; border-radius: 999px; }
+    nav a:hover { background: var(--latte); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: radial-gradient(1200px 400px at 20% 0%, #fff7ef, transparent 70%),
+                  radial-gradient(800px 400px at 90% 10%, #f6eee7, transparent 65%),
+                  linear-gradient(180deg, #ffffff 0%, #fff7ef 100%);
+      border-bottom: 1px solid #efe9e3;
+    }
+    .hero-inner { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; padding: 56px 0 64px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .6rem; border-radius: 999px;
+      background: #fff; border: 1px solid #eedfd3; color: var(--cinnamon); font-weight: 600; font-size: .85rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+
+    .hero-photo {
+      position: relative; isolation: isolate; height: 420px; border-radius: calc(var(--radius) + 6px);
+      background: url('https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1889&auto=format&fit=crop') center/cover no-repeat;
+      box-shadow: var(--shadow-md);
+      overflow: hidden; border: 1px solid #efebe5;
+    }
+    .hero-photo::after { /* warm vignette */
+      content: ""; position: absolute; inset: 0; background: radial-gradient(120% 80% at 70% 20%, #00000022, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* ---------- Menu ---------- */
+    .menu-grid { grid-template-columns: repeat(12, 1fr); }
+    .menu-card { grid-column: span 6; display: grid; grid-template-columns: 110px 1fr; gap: 1rem; padding: 1rem; align-items: center; }
+    .menu-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 12px; }
+    .price { font-weight: 700; color: var(--cinnamon); }
+
+    /* ---------- Specials band ---------- */
+    .band { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .band > .tile {
+      position: relative; overflow: hidden; border-radius: var(--radius); padding: 1.25rem; min-height: 160px; color: white;
+      background: linear-gradient(120deg, var(--cinnamon), var(--cinnamon-300));
+      box-shadow: var(--shadow-md);
+    }
+    .tile.light { color: var(--mocha); background: linear-gradient(120deg, #fff, #f5ede6); border: 1px solid #efe3d6; }
+    .tile h3 { margin-bottom: .35rem; }
+
+    /* ---------- Testimonials ---------- */
+    .testimonials { grid-template-columns: repeat(3, 1fr); }
+    .quote { padding: 1rem; }
+    .quote p { margin-top: .25rem; font-style: italic; }
+
+    /* ---------- Footer ---------- */
+    footer { background: var(--mocha); color: #f6efe9; padding: 56px 0 64px; margin-top: 40px; }
+    .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr .8fr; gap: 1.25rem; }
+    .footer-grid a { color: #f6efe9; text-decoration: none; opacity: .9; }
+    .footer-grid a:hover { text-decoration: underline; }
+
+    /* ---------- Fade/Reveal effects ---------- */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .6s ease; }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 920px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo { height: 320px; }
+      .band { grid-template-columns: 1fr; }
+      .testimonials { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 680px) {
+      nav ul { display: none; }
+      .menu-card { grid-template-columns: 80px 1fr; }
+      .menu-card { grid-column: span 12; }
+      .testimonials { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / navigation -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Cozy Cinnamon Café Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">Cozy Cinnamon Café</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#visit">Visit</a></li>
+          <li><a href="#order" class="btn" style="padding:.5rem .9rem">Order Online</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero section">
+    <div class="container hero-inner">
+      <div>
+        <span class="badge reveal" aria-live="polite">Freshly brewed • Daily baked</span>
+        <h1 class="reveal" style="margin: .6rem 0 .4rem">Warm cups. Soft light. <br> Your new favorite nook.</h1>
+        <p class="reveal" style="max-width: 55ch">We’re a neighborhood café with a love for cinnamon, slow mornings, and thoughtful design. From silky flat whites to cardamom buns, everything is crafted to be simple, cozy, and just a little bit special.</p>
+        <div class="hero-actions reveal">
+          <a href="#menu" class="btn">Explore the Menu</a>
+          <a href="#visit" class="btn-ghost">Hours & Location</a>
+        </div>
+      </div>
+      <div class="hero-photo reveal" role="img" aria-label="A cozy coffee scene with mugs and pastries"></div>
+    </div>
+  </section>
+
+  <!-- Specials band -->
+  <section aria-label="Highlights" class="section alt">
+    <div class="container band">
+      <article class="tile reveal">
+        <h3>Baker’s Morning</h3>
+        <p>From 7–10am: cinnamon rolls & a filter coffee combo.</p>
+      </article>
+      <article class="tile light reveal">
+        <h3>Seasonal: Maple Oat Latte</h3>
+        <p>Lightly sweet, toasted oat, with a whisper of cinnamon.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section id="menu" class="section" aria-labelledby="menu-title">
+    <div class="container">
+      <header style="margin-bottom: .75rem" class="reveal">
+        <h2 id="menu-title">Menu Favorites</h2>
+        <p>Balanced flavors, quality ingredients, and generous portions. Prices include tax.</p>
+      </header>
+      <div class="grid menu-grid">
+        <article class="card menu-card reveal" aria-label="Cinnamon Latte">
+          <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86?q=80&w=1887&auto=format&fit=crop" alt="Cinnamon latte"/>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:.75rem">
+              <h3>Cinnamon Latte</h3>
+              <span class="price">$5.25</span>
+            </div>
+            <p>Espresso, steamed milk, cinnamon syrup, dusted top.</p>
+          </div>
+        </article>
+
+        <article class="card menu-card reveal" aria-label="Maple Oat Latte">
+          <img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?q=80&w=1887&auto=format&fit=crop" alt="Maple oat latte"/>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:.75rem">
+              <h3>Maple Oat Latte</h3>
+              <span class="price">$5.75</span>
+            </div>
+            <p>House maple syrup, oat milk, pinch of sea salt.</p>
+          </div>
+        </article>
+
+        <article class="card menu-card reveal" aria-label="Cardamom Bun">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1887&auto=format&fit=crop" alt="Cardamom bun"/>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:.75rem">
+              <h3>Cardamom Bun</h3>
+              <span class="price">$4.25</span>
+            </div>
+            <p>Buttery layers with cardamom sugar and a soft crumb.</p>
+          </div>
+        </article>
+
+        <article class="card menu-card reveal" aria-label="Cinnamon Roll">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1887&auto=format&fit=crop" alt="Cinnamon roll"/>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:.75rem">
+              <h3>Cinnamon Roll</h3>
+              <span class="price">$4.75</span>
+            </div>
+            <p>Classic swirls with vanilla glaze and toasted pecans.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section alt">
+    <div class="container grid" style="grid-template-columns: 1.1fr .9fr; align-items:center;">
+      <div class="reveal">
+        <h2>Designed for lingering</h2>
+        <p>We designed Cozy Cinnamon Café around natural light, soft textures, and quiet corners. Materials are simple—oak, linen, ceramic—so the space feels calm and welcoming, whether you’re catching up with a friend or knocking out a deadline.</p>
+        <p>Our UX in real life: intuitive ordering, clear menu structure, and comfortable seating. Online, we keep that same care—clean layout, generous spacing, and accessible contrast—so you can find what you need in a breath.</p>
+      </div>
+      <div class="card reveal" style="padding:1rem; overflow:hidden">
+        <img src="https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1974&auto=format&fit=crop" alt="Bright café counter with pastries" style="width:100%; height: 320px; object-fit: cover; border-radius: 12px;"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visit -->
+  <section id="visit" class="section">
+    <div class="container">
+      <header class="reveal" style="margin-bottom:.75rem">
+        <h2>Visit Us</h2>
+        <p>123 Cinnamon Lane, Suite A • Mon–Fri 7a–6p • Sat–Sun 8a–5p</p>
+      </header>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="card reveal" style="padding:1rem">
+          <h3>Contact</h3>
+          <p>Call (555) 555‑0123 or <a href="mailto:hello@cozycinnamon.cafe" style="color:var(--cinnamon); font-weight:600">hello@cozycinnamon.cafe</a></p>
+          <p>Order ahead to skip the line — we’ll have it ready and warm.</p>
+          <div style="margin-top: .75rem">
+            <a id="order" href="#menu" class="btn">Start an Order</a>
+          </div>
+        </div>
+        <div class="card reveal" style="padding:0; overflow:hidden">
+          <iframe title="Map" aria-label="Map to Cozy Cinnamon Café" src="https://www.openstreetmap.org/export/embed.html?bbox=-74.006%2C40.712%2C-74.001%2C40.716&layer=mapnik" style="border:0; width:100%; height:260px"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section alt" aria-label="Guest reviews">
+    <div class="container">
+      <h2 class="reveal" style="margin-bottom:.75rem">What our guests say</h2>
+      <div class="grid testimonials">
+        <article class="card quote reveal">
+          <h3>“Cozy, beautiful, and delicious.”</h3>
+          <p>Everything tastes like it was made with care. The cinnamon latte is a hug in a cup.</p>
+        </article>
+        <article class="card quote reveal">
+          <h3>“My remote-work haven.”</h3>
+          <p>Great Wi‑Fi, comfy chairs, perfect music volume. I actually get things done here.</p>
+        </article>
+        <article class="card quote reveal">
+          <h3>“Design lovers, rejoice.”</h3>
+          <p>Soft textures, warm colors, and beautifully simple details. It’s effortless.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <h3 style="color:#fff">Cozy Cinnamon Café</h3>
+        <p style="color:#f1e6dc">Warm cups, soft light, and generous hospitality.</p>
+      </div>
+      <div>
+        <h3 style="color:#fff">Hours</h3>
+        <p style="color:#f1e6dc">Mon–Fri 7a–6p<br>Sat–Sun 8a–5p</p>
+      </div>
+      <div>
+        <h3 style="color:#fff">Follow</h3>
+        <p><a href="#">Instagram</a> • <a href="#">TikTok</a> • <a href="#">Newsletter</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // IntersectionObserver for smooth reveal-on-scroll
+    const revealables = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealables.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
